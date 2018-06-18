@@ -380,10 +380,9 @@ class KeplerMapper(object):
                 
                 X_cube = X[[int(nn) for nn in hypercube[:, 0]]]
                 # print(hypercube[:,0])
-
-                ts_cube = time_label[[int(nn) for nn in hypercube[:,0]]].tolist()
-                # t_cube = max(ts_cube,key=ts_cube.count) 
-                t_cube = Counter(ts_cube).most_common(1)[0][0]
+                if time_label is not None and time_filtration is not None:
+                    ts_cube = time_label[[int(nn) for nn in hypercube[:,0]]].tolist()
+                    t_cube = Counter(ts_cube).most_common(1)[0][0]
                 # print(ts_cube)
                 # print(t_cube)
                 # t_cube = 1
@@ -406,7 +405,8 @@ class KeplerMapper(object):
 
                         # Append the member id's as integers
                         nodes[cluster_id].append(int(a[0]))
-                        times[cluster_id].append(int(t_cube))
+                        if time_label is not None and time_filtration is not None:
+                            times[cluster_id].append(int(t_cube))
                         meta[cluster_id] = {
                             "size": hypercube.shape[0], "coordinates": cube}
             else:
